@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -25,4 +27,8 @@ public class EntradaProduto {
     @Size(max = 20)
     private String numNotaFiscal;
     private Double valorImposto;
+
+    @OneToMany
+    @JoinColumn(name = "entrada_id", referencedColumnName = "id")
+    private List<ItemEntrada> itensEntrada = new ArrayList<>();
 }
