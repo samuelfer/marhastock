@@ -33,4 +33,12 @@ public class Produto {
     private Fornecedor fornecedor;
     private int quantidadeMinima;
     private Double quantidadeEstoque;
+
+    public void adicionarEstoque(Double quantidade) {
+        this.quantidadeEstoque = this.quantidadeEstoque + quantidade;
+    }
+
+    public void retirarEstoque(Double quantidade) {
+        this.quantidadeEstoque = this.quantidadeEstoque - quantidade;
+    }
 }
