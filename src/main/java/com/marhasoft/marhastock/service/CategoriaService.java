@@ -30,8 +30,8 @@ public class CategoriaService {
         return categoriaDTO;
     }
 
-    public CategoriaDTO editar(CategoriaDTO categoriaDTO) {
-        Categoria categoria = getById(categoriaDTO.getId());
+    public CategoriaDTO editar(Long id, CategoriaDTO categoriaDTO) {
+        Categoria categoria = getById(id);
         categoria.setDescricao(categoriaDTO.getDescricao());
         categoriaRepository.save(categoria);
         return categoriaDTO;
