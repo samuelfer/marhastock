@@ -23,16 +23,18 @@ public class CategoriaService {
                 new RuntimeException("Categoria com id: " + id + " não encontrada"));
     }
 
-    public Categoria cadastrar(CategoriaDTO categoriaDTO) {
+    public CategoriaDTO cadastrar(CategoriaDTO categoriaDTO) {
         Categoria categoria = new Categoria();
         categoria.setDescricao(categoriaDTO.getDescricao());
-        return categoriaRepository.save(categoria);
+        categoriaRepository.save(categoria);
+        return categoriaDTO;
     }
 
-    public Categoria editar(CategoriaDTO categoriaDTO) {
+    public CategoriaDTO editar(CategoriaDTO categoriaDTO) {
         Categoria categoria = getById(categoriaDTO.getId());
         categoria.setDescricao(categoriaDTO.getDescricao());
-        return categoriaRepository.save(categoria);
+        categoriaRepository.save(categoria);
+        return categoriaDTO;
     }
 
     public void deletar(Long id) {

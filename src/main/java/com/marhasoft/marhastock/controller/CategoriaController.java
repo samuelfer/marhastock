@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("categorias")
 public class CategoriaController {
@@ -18,23 +20,23 @@ public class CategoriaController {
     private CategoriaService categoriaService;
 
     @GetMapping
-    public ResponseEntity<Categoria> getAll() {
-        return new ResponseEntity(categoriaService.getAll(), HttpStatus.OK);
+    public ResponseEntity<List<Categoria>> getAll() {
+        return new ResponseEntity<>(categoriaService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Categoria> getById(@PathVariable("id") Long id) {
-        return new ResponseEntity(categoriaService.getById(id), HttpStatus.OK);
+        return new ResponseEntity<>(categoriaService.getById(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Categoria> cadastrar(@Valid @RequestBody CategoriaDTO categoriaDTO) {
-        return new ResponseEntity(categoriaService.cadastrar(categoriaDTO), HttpStatus.CREATED);
+    public ResponseEntity<CategoriaDTO> cadastrar(@Valid @RequestBody CategoriaDTO categoriaDTO) {
+        return new ResponseEntity<>(categoriaService.cadastrar(categoriaDTO), HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<Categoria> editar(@Valid @RequestBody CategoriaDTO categoriaDTO) {
-        return new ResponseEntity(categoriaService.editar(categoriaDTO), HttpStatus.OK);
+    public ResponseEntity<CategoriaDTO> editar(@Valid @RequestBody CategoriaDTO categoriaDTO) {
+        return new ResponseEntity<>(categoriaService.editar(categoriaDTO), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
