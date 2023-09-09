@@ -31,17 +31,26 @@ public class CategoriaController {
 
     @PostMapping
     public ResponseEntity<CategoriaDTO> cadastrar(@Valid @RequestBody CategoriaDTO categoriaDTO) {
-        return new ResponseEntity(categoriaService.cadastrar(categoriaDTO), HttpStatus.CREATED);
+        try {
+            return new ResponseEntity(categoriaService.cadastrar(categoriaDTO), HttpStatus.CREATED);
+        }  catch (Exception e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CategoriaDTO> editar(@PathVariable("id") Long id, @Valid @RequestBody CategoriaDTO categoriaDTO) {
-        return new ResponseEntity(categoriaService.editar(id, categoriaDTO), HttpStatus.OK);
+        try {
+            return new ResponseEntity(categoriaService.editar(id, categoriaDTO), HttpStatus.OK);
+        }  catch (Exception e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@NotNull Long id) {
         categoriaService.deletar(id);
-        return new ResponseEntity("Registro excluído com sucesso", HttpStatus.OK);
+        return new ResponseEntity(null, HttpStatus.NO_CONTENT);
     }
 }
