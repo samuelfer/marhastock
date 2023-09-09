@@ -3,6 +3,7 @@ package com.marhasoft.marhastock.dto;
 import com.marhasoft.marhastock.model.Categoria;
 import com.marhasoft.marhastock.model.Fornecedor;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,8 +22,10 @@ public class ProdutoDTO {
     private String descricao;
     @Size(max = 10)
     private String codigo;
+    @NotNull
     private Categoria categoria;
     private Double peso;
+    @NotNull
     private Fornecedor fornecedor;
     private int quantidadeMinima;
     private Double quantidadeEstoque;
