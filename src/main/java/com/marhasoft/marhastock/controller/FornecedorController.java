@@ -31,12 +31,20 @@ public class FornecedorController {
 
     @PostMapping
     public ResponseEntity<FornecedorDTO> cadastrar(@Valid @RequestBody FornecedorDTO fornecedorDTO) {
-        return new ResponseEntity<>(fornecedorService.cadastrar(fornecedorDTO), HttpStatus.CREATED);
+        try {
+            return new ResponseEntity<>(fornecedorService.cadastrar(fornecedorDTO), HttpStatus.CREATED);
+        }  catch (Exception e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping
     public ResponseEntity<FornecedorDTO> editar(@Valid @RequestBody FornecedorDTO fornecedorDTO) {
-        return new ResponseEntity<>(fornecedorService.editar(fornecedorDTO), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(fornecedorService.editar(fornecedorDTO), HttpStatus.OK);
+        }  catch (Exception e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/{id}")
