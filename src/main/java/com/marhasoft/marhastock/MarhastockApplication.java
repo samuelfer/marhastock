@@ -9,5 +9,4 @@ public class MarhastockApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MarhastockApplication.class, args);
 	}
-
 }
