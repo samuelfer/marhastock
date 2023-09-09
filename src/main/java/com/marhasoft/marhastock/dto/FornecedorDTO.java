@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.br.CNPJ;
 
 @Data
 @AllArgsConstructor
@@ -19,7 +18,6 @@ public class FornecedorDTO {
     @NotBlank()
     @Size(min = 5, max = 255)
     private String nome;
-    @CNPJ
     private String cnpf;
     @Email
     @Size(max = 150)
