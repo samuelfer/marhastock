@@ -1,10 +1,10 @@
 package com.marhasoft.marhastock.dto;
 
 import com.marhasoft.marhastock.model.EntradaProduto;
+import com.marhasoft.marhastock.model.Produto;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,16 +18,15 @@ public class ItemEntradaDTO {
 
     private Long id;
     @NotNull
-    @Size(min = 1)
+    private Produto produto;
+    @NotNull
     private Double quantidade;
     @NotNull
-    @Size(min = 1)
-    private Double valorCompra;
+    private Double valorCompra = 0.0;
     @NotNull
-    @Size(min = 1)
-    private Double valorTotal;
+    private Double valorTotal = 0.0;
     @OneToOne
     @JoinColumn(name = "entrada_id")
     private EntradaProduto codEntrada;
-    private Double desconto;
+    private Double desconto = 0.0;
 }

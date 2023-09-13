@@ -19,14 +19,13 @@ public class ItemEntrada {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+    @OneToOne(targetEntity = Produto.class)
+    private Produto produto;
     @NotNull
-    @Size(min = 1)
     private Double quantidade;
     @NotNull
-    @Size(min = 1)
     private Double valorCompra;
     @NotNull
-    @Size(min = 1)
     private Double valorTotal;
     private Double desconto;
 }
