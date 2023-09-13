@@ -22,11 +22,11 @@ public class ItemEntradaDTO {
     @NotNull
     private Double quantidade;
     @NotNull
-    private Double valorCompra = 0.0;
+    private Double valorCompra;
     @NotNull
-    private Double valorTotal = 0.0;
+    private Double valorTotal;
     @OneToOne
     @JoinColumn(name = "entrada_id")
     private EntradaProduto codEntrada;
-    private Double desconto = 0.0;
+    private Double desconto;
 }
