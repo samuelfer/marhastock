@@ -24,11 +24,11 @@ public class Produto {
     private String descricao;
     @Size(max = 10)
     private String codigo;
-    @OneToOne
-    @JoinColumn(name = "categoria_id")
+    @ManyToOne
+    @JoinColumn(name="categoria_id", nullable=false)
     private Categoria categoria;
     private Double peso;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "fornecedor_id")
     private Fornecedor fornecedor;
     private int quantidadeMinima;
