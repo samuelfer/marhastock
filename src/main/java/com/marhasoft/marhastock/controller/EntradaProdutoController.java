@@ -8,12 +8,13 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("entradas")
+@RequestMapping("/entradas")
 public class EntradaProdutoController {
 
     @Autowired
@@ -30,8 +31,13 @@ public class EntradaProdutoController {
     }
 
     @PostMapping
+    @Transactional
     public ResponseEntity<EntradaProdutoDTO> cadastrar(@Valid @RequestBody EntradaProdutoDTO entradaProdutoDTO) {
-        return new ResponseEntity<>(entradaService.cadastrar(entradaProdutoDTO), HttpStatus.CREATED);
+       try {
+           return new ResponseEntity<>(entradaService.cadastrar(entradaProdutoDTO), HttpStatus.CREATED);
+       } catch (Exception e) {
+           return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+       }
     }
 
     @PutMapping
