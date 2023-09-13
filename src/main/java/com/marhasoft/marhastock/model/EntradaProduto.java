@@ -28,7 +28,7 @@ public class EntradaProduto {
     private String numNotaFiscal;
     private Double valorImposto;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "entrada_id", referencedColumnName = "id")
     private List<ItemEntrada> itensEntrada = new ArrayList<>();
 }
