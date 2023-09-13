@@ -33,6 +33,8 @@ public class EntradaProdutoService {
     public EntradaProdutoDTO cadastrar(EntradaProdutoDTO entradaDTO) {
         validaItensDaEntrada(entradaDTO.getItensEntrada());
         EntradaProduto entradaProduto = modelMapper.map(entradaDTO, EntradaProduto.class);
+        entradaProduto.getItensEntrada().forEach(itemEntrada ->
+                itemEntrada.sumValorTotal(itemEntrada.getQuantidade()));
         entradaRepository.save(entradaProduto);
         return entradaDTO;
     }

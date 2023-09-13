@@ -28,4 +28,8 @@ public class ItemEntrada {
     @NotNull
     private Double valorTotal;
     private Double desconto;
+
+    public Double sumValorTotal(Double quantidade) {
+        return this.valorTotal = this.valorCompra * quantidade;
+    }
 }
