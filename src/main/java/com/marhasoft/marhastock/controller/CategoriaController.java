@@ -1,17 +1,19 @@
 package com.marhasoft.marhastock.controller;
 
 import com.marhasoft.marhastock.dto.CategoriaDTO;
-import com.marhasoft.marhastock.model.Categoria;
 import com.marhasoft.marhastock.service.CategoriaService;
+import jakarta.annotation.Nonnull;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/categorias")
 public class CategoriaController {
@@ -20,37 +22,30 @@ public class CategoriaController {
     private CategoriaService categoriaService;
 
     @GetMapping
-    public ResponseEntity<List<Categoria>> getAll() {
-        return ResponseEntity.ok(categoriaService.getAll());
+    public List<CategoriaDTO> getAll() {
+        return categoriaService.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Categoria> getById(@PathVariable("id") Long id) {
-        return new ResponseEntity(categoriaService.getById(id), HttpStatus.OK);
+    public CategoriaDTO getById(@PathVariable @Positive @NotNull Long id) {
+        return categoriaService.getById(id);
     }
 
     @PostMapping
-    public ResponseEntity<CategoriaDTO> cadastrar(@Valid @RequestBody CategoriaDTO categoriaDTO) {
-        try {
-            return new ResponseEntity(categoriaService.cadastrar(categoriaDTO), HttpStatus.CREATED);
-        }  catch (Exception e) {
-            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public CategoriaDTO cadastrar(@RequestBody @Valid CategoriaDTO categoriaDTO) {
+        return categoriaService.cadastrar(categoriaDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CategoriaDTO> editar(@PathVariable("id") Long id, @Valid @RequestBody CategoriaDTO categoriaDTO) {
-        try {
-            return new ResponseEntity(categoriaService.editar(id, categoriaDTO), HttpStatus.OK);
-        }  catch (Exception e) {
-            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+    @ResponseStatus(code = HttpStatus.OK)
+    public CategoriaDTO editar(@PathVariable @Nonnull @Positive Long id, @Valid @RequestBody @Nonnull CategoriaDTO categoriaDTO) {
+        return categoriaService.editar(id, categoriaDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@NotNull Long id) {
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public void deletar(@PathVariable @Nonnull @Positive Long id) {
         categoriaService.deletar(id);
-        return new ResponseEntity(null, HttpStatus.NO_CONTENT);
     }
 }

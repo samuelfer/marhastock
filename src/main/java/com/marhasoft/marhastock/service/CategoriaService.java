@@ -1,9 +1,10 @@
 package com.marhasoft.marhastock.service;
 
 import com.marhasoft.marhastock.dto.CategoriaDTO;
+import com.marhasoft.marhastock.exception.RecordNotFoundException;
+import com.marhasoft.marhastock.exception.UniqueException;
 import com.marhasoft.marhastock.model.Categoria;
 import com.marhasoft.marhastock.repository.CategoriaRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,43 +16,51 @@ public class CategoriaService {
 
     @Autowired
     private CategoriaRepository categoriaRepository;
-    @Autowired
-    private ModelMapper modelMapper;
 
-    public List<Categoria> getAll() {
-        return categoriaRepository.findAll();
+    public List<CategoriaDTO> getAll() {
+        List<Categoria> categorias = categoriaRepository.findAll();
+        return categorias.stream()
+        .map(categoria -> categoriaToCategoriaDTO(categoria)).toList();
     }
 
-    public Categoria getById(Long id) {
-        return categoriaRepository.findById(id).orElseThrow(() ->
-                new RuntimeException("Categoria com id: " + id + " não encontrada"));
+    public CategoriaDTO getById(Long id) {
+       Optional<Categoria> categoria = categoriaRepository.findById(id);
+       if (!categoria.isPresent()) {
+           throw  new RecordNotFoundException("Categoria com id: " + id + " não encontrada");
+       }
+       return categoriaToCategoriaDTO(categoria.get());
     }
 
     public CategoriaDTO cadastrar(CategoriaDTO categoriaDTO) {
-        categoriaJaCadastrada(categoriaDTO);
+        categoriaJaCadastrada(categoriaDTO.getDescricao());
         Categoria categoria = new Categoria();
         categoria.setDescricao(categoriaDTO.getDescricao());
         categoriaRepository.save(categoria);
-        CategoriaDTO categoriaCadastrada = modelMapper.map(categoria, CategoriaDTO.class);
-        return categoriaCadastrada;
+        return categoriaToCategoriaDTO(categoria);
     }
 
     public CategoriaDTO editar(Long id, CategoriaDTO categoriaDTO) {
-        Categoria categoria = getById(id);
+        getById(id);
+        Categoria categoria = new Categoria();
+        categoria.setId(id);
         categoria.setDescricao(categoriaDTO.getDescricao());
         categoriaRepository.save(categoria);
-        return categoriaDTO;
+        return categoriaToCategoriaDTO(categoria);
     }
 
     public void deletar(Long id) {
-        Categoria categoria = getById(id);
-        categoriaRepository.delete(categoria);
+        CategoriaDTO categoria = getById(id);
+        categoriaRepository.deleteById(categoria.getId());
     }
 
-    private void categoriaJaCadastrada(CategoriaDTO categoriaDTO) {
-        Optional<Categoria> categoria = categoriaRepository.findByDescricao(categoriaDTO.getDescricao());
+    private void categoriaJaCadastrada(String descricao) {
+        Optional<Categoria> categoria = categoriaRepository.findByDescricao(descricao);
         if (categoria.isPresent()) {
-            throw new RuntimeException("Categoria "+ categoriaDTO.getDescricao() + " Já cadastrada");
+            throw new UniqueException("Categoria "+ descricao + " Já cadastrada no sistema");
         }
+    }
+
+    private CategoriaDTO categoriaToCategoriaDTO(Categoria categoria) {
+        return new CategoriaDTO(categoria.getId(), categoria.getDescricao());
     }
 }

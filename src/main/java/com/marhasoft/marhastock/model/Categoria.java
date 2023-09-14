@@ -2,11 +2,12 @@ package com.marhasoft.marhastock.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 @Data
 @AllArgsConstructor
@@ -21,6 +22,8 @@ public class Categoria {
     private Long id;
 
     @NotBlank
-    @Size(min = 3, max = 255)
+    @NotNull
+    @Length(min = 5, max = 100)
+    @Column(length = 100, nullable = false)
     private String descricao;
 }
