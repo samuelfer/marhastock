@@ -17,10 +17,12 @@ public class CategoriaService {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
+    private ConverteDados conversor = new ConverteDados();
+
     public List<CategoriaDTO> getAll() {
         List<Categoria> categorias = categoriaRepository.findAll();
         return categorias.stream()
-        .map(categoria -> categoriaToCategoriaDTO(categoria)).toList();
+        .map(categoria -> conversor.modelToDTO(categoria, CategoriaDTO.class)).toList();
     }
 
     public CategoriaDTO getById(Long id) {
@@ -28,7 +30,7 @@ public class CategoriaService {
        if (!categoria.isPresent()) {
            throw  new RecordNotFoundException("Categoria com id: " + id + " não encontrada");
        }
-       return categoriaToCategoriaDTO(categoria.get());
+       return conversor.modelToDTO(categoria.get(), CategoriaDTO.class);
     }
 
     public CategoriaDTO cadastrar(CategoriaDTO categoriaDTO) {
@@ -36,7 +38,7 @@ public class CategoriaService {
         Categoria categoria = new Categoria();
         categoria.setDescricao(categoriaDTO.getDescricao());
         categoriaRepository.save(categoria);
-        return categoriaToCategoriaDTO(categoria);
+        return conversor.modelToDTO(categoria, CategoriaDTO.class);
     }
 
     public CategoriaDTO editar(Long id, CategoriaDTO categoriaDTO) {
@@ -45,7 +47,7 @@ public class CategoriaService {
         categoria.setId(id);
         categoria.setDescricao(categoriaDTO.getDescricao());
         categoriaRepository.save(categoria);
-        return categoriaToCategoriaDTO(categoria);
+        return conversor.modelToDTO(categoria, CategoriaDTO.class);
     }
 
     public void deletar(Long id) {
@@ -58,9 +60,5 @@ public class CategoriaService {
         if (categoria.isPresent()) {
             throw new UniqueException("Categoria "+ descricao + " Já cadastrada no sistema");
         }
-    }
-
-    private CategoriaDTO categoriaToCategoriaDTO(Categoria categoria) {
-        return new CategoriaDTO(categoria.getId(), categoria.getDescricao());
     }
 }

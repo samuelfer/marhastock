@@ -16,10 +16,12 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
+    private ConverteDados conversor = new ConverteDados();
+
     public List<ClienteDTO> getAll() {
         List<Cliente> clientes = clienteRepository.findAll();
         return clientes.stream()
-                .map(categoria -> clienteToClienteDTO(categoria)).toList();
+                .map(cliente -> conversor.modelToDTO(cliente, ClienteDTO.class)).toList();
     }
 
     public ClienteDTO getById(Long id) {
@@ -27,31 +29,24 @@ public class ClienteService {
         if (!cliente.isPresent()) {
             throw new RecordNotFoundException("Cliente com id: " + id + " não encontrado");
         }
-       return clienteToClienteDTO(cliente.get());
+        return conversor.modelToDTO(cliente.get(), ClienteDTO.class);
     }
 
     public ClienteDTO cadastrar(ClienteDTO clienteDTO) {
         Cliente cliente = new Cliente();
         Cliente clienteSalvo = clienteRepository.save(cliente.clienteDtoToCliente(clienteDTO));
-        return clienteToClienteDTO(clienteSalvo);
+        return conversor.modelToDTO(clienteSalvo, ClienteDTO.class);
     }
 
     public ClienteDTO editar(Long id, ClienteDTO clienteDTO) {
         getById(id);
         Cliente cliente = new Cliente();
         Cliente clienteSalvo = clienteRepository.save(cliente.clienteDtoToCliente(clienteDTO));
-        return clienteToClienteDTO(clienteSalvo);
+        return conversor.modelToDTO(clienteSalvo, ClienteDTO.class);
     }
 
     public void deletar(Long id) {
         getById(id);
         clienteRepository.deleteById(id);
-    }
-
-    private ClienteDTO clienteToClienteDTO(Cliente cliente) {
-        return new ClienteDTO(cliente.getId(), cliente.getNome(), cliente.getCnpf(), cliente.getEmail(),
-                cliente.getTelefone(), cliente.getCelular(), cliente.getInscEstadual(), cliente.getCep(),
-                cliente.getEstado(), cliente.getCidade(), cliente.getRua(), cliente.getBairro(),
-                cliente.getNumero());
     }
 }
