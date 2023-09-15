@@ -33,7 +33,7 @@ public class CategoriaController {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public CategoriaDTO cadastrar(@RequestBody @Valid CategoriaDTO categoriaDTO) {
+    public CategoriaDTO cadastrar(@Valid @RequestBody CategoriaDTO categoriaDTO) {
         return categoriaService.cadastrar(categoriaDTO);
     }
 
